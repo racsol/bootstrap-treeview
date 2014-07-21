@@ -267,8 +267,41 @@ and using jQuery .on method
 		// Your logic goes here
 	});
 		
+### nodeMinimize
+Fired when a user minimze a node. You can bind to it using either the callback handler or the standard jQuery .on method
 
+Example using options callback handler:
 
+	var options = {
+		onNodeMinimize: function(event, node) {
+			// Your logic goes here
+		}
+	}
+	$('#tree').treeview(options);
+
+and using jQuery .on method
+
+	$('#tree').on('nodeMinimize', function(event, node) {
+		// Your logic goes here
+	});
+
+### nodeExpand
+Fired when a user expands a node. You can bind to it using either the callback handler or the standard jQuery .on method
+
+Example using options callback handler:
+
+	var options = {
+		onNodeExpand: function(event, node) {
+			// Your logic goes here
+		}
+	}
+	$('#tree').treeview(options);
+
+and using jQuery .on method
+
+	$('#tree').on('nodeExpand', function(event, node) {
+		// Your logic goes here
+	});
 
 ## Copyright and Licensing
 Copyright 2013 Jonathan Miles

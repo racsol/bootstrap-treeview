@@ -307,29 +307,29 @@
 		init({
 			levels: 2,
 			data: testData,
-			onNodeTreeMinimize: function(/*event, date*/) {
+			onNodeMinimize: function(/*event, date*/) {
 				cbCalled = true;
 			},
-			onNodeTreeExpand: function(/*event, date*/) {
+			onNodeExpand: function(/*event, date*/) {
 				cbCalled = true;
 			}
 		})
-		.on('nodeTreeMinimize', function(/*event, date*/) {
+		.on('nodeMinimize', function(/*event, date*/) {
 			onCalled = true;
 		})
-		.on('nodeTreeExpand', function(/*event, date*/) {
+		.on('nodeExpand', function(/*event, date*/) {
 			onCalled = true;
 		});
 
 		var el = $('.list-group-item:first .click-collapse');
 		el.trigger('click');
-		ok(cbCalled, 'onNodeTreeMinimize function should be called');
-		ok(onCalled, 'nodeTreeMinimize should fire');
+		ok(cbCalled, 'onNodeMinimize function should be called');
+		ok(onCalled, 'nodeMinimize should fire');
 		cbCalled, onCalled = false;
 		el = $('.list-group-item:first .click-expand');
 		el.trigger('click');
-		ok(cbCalled, 'onNodeTreeMinimize function should be called');
-		ok(onCalled, 'nodeTreeExpand should fire');
+		ok(cbCalled, 'onNodeMinimize function should be called');
+		ok(onCalled, 'nodeExpand should fire');
 	});
 
 }());

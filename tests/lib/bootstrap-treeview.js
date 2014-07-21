@@ -64,9 +64,9 @@
 		// Event handler for when a node is selected
 		onNodeSelected: undefined,
 		// Event handler for when a node tree is expanded
-		onNodeTreeExpand: undefined,
+		onNodeExpand: undefined,
 		// Event handler for when a node tree is minimized
-		onNodeTreeMinimize: undefined
+		onNodeMinimize: undefined
 	};
 
 	Tree.prototype = {
@@ -125,11 +125,11 @@
 			if (typeof (this.options.onNodeSelected) === 'function') {
 				this.$element.on('nodeSelected', this.options.onNodeSelected);
 			}
-			if (typeof (this.options.onNodeTreeExpand) === 'function') {
-				this.$element.on('nodeTreeExpand', this.options.onNodeTreeExpand);
+			if (typeof (this.options.onNodeExpand) === 'function') {
+				this.$element.on('nodeExpand', this.options.onNodeExpand);
 			}
-			if (typeof (this.options.onNodeTreeMinimize) === 'function') {
-				this.$element.on('nodeTreeMinimize', this.options.onNodeTreeMinimize);
+			if (typeof (this.options.onNodeMinimize) === 'function') {
+				this.$element.on('nodeMinimize', this.options.onNodeMinimize);
 			}
 		},
 
@@ -170,16 +170,16 @@
 			return node;
 		},
 
-		// Actually triggers the nodeTreeExpand event
-		_triggerNodeTreeExpandEvent: function(node) {
+		// Actually triggers the nodeExpand event
+		_triggerNodeExpandEvent: function(node) {
 
-			this.$element.trigger('nodeTreeExpand', [$.extend(true, {}, node)]);
+			this.$element.trigger('nodeExpand', [$.extend(true, {}, node)]);
 		},
 
-		// Actually triggers the nodeTreeExpand event
-		_triggerNodeTreeMinimizeEvent: function(node) {
+		// Actually triggers the nodeExpand event
+		_triggerNodeMinimizeEvent: function(node) {
 
-			this.$element.trigger('nodeTreeMinimize', [$.extend(true, {}, node)]);
+			this.$element.trigger('nodeMinimize', [$.extend(true, {}, node)]);
 		},		
 
 		// Actually triggers the nodeSelected event
@@ -236,12 +236,12 @@
 			}
 
 			if (node.nodes) {
-				this._triggerNodeTreeMinimizeEvent(node);
+				this._triggerNodeMinimizeEvent(node);
 				node._nodes = node.nodes;
 				delete node.nodes;
 			}
 			else {
-				this._triggerNodeTreeExpandEvent(node);
+				this._triggerNodeExpandEvent(node);
 				node.nodes = node._nodes;
 				delete node._nodes;
 			}
