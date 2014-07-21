@@ -299,4 +299,37 @@
 		ok(($('.list-group-item').length < nodeCount), 'Number of nodes has decreased, so node must have collapsed');
 	});
 
+	test('Clicking on a collapsable item and on a expandable item', function () {
+		var testData = $.extend(true, {}, data);
+		testData[0].selectable = false;
+
+		var cbCalled, onCalled = false;
+		init({
+			levels: 2,
+			data: testData,
+			onNodeTreeMinimize: function(/*event, date*/) {
+				cbCalled = true;
+			},
+			onNodeTreeExpand: function(/*event, date*/) {
+				cbCalled = true;
+			}
+		})
+		.on('nodeTreeMinimize', function(/*event, date*/) {
+			onCalled = true;
+		})
+		.on('nodeTreeExpand', function(/*event, date*/) {
+			onCalled = true;
+		});
+
+		var el = $('.list-group-item:first .click-collapse');
+		el.trigger('click');
+		ok(cbCalled, 'onNodeTreeMinimize function should be called');
+		ok(onCalled, 'nodeTreeMinimize should fire');
+		cbCalled, onCalled = false;
+		el = $('.list-group-item:first .click-expand');
+		el.trigger('click');
+		ok(cbCalled, 'onNodeTreeMinimize function should be called');
+		ok(onCalled, 'nodeTreeExpand should fire');
+	});
+
 }());

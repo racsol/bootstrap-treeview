@@ -1,5 +1,5 @@
 /* =========================================================
- * bootstrap-treeview.js v1.0.0
+ * bootstrap-treeview.js v1.0.1
  * =========================================================
  * Copyright 2013 Jonathan Miles 
  * Project URL : http://www.jondmiles.com/bootstrap-treeview
@@ -62,7 +62,11 @@
 		showTags: false,
 
 		// Event handler for when a node is selected
-		onNodeSelected: undefined
+		onNodeSelected: undefined,
+		// Event handler for when a node tree is expanded
+		onNodeTreeExpand: undefined,
+		// Event handler for when a node tree is minimized
+		onNodeTreeMinimize: undefined
 	};
 
 	Tree.prototype = {
@@ -121,6 +125,12 @@
 			if (typeof (this.options.onNodeSelected) === 'function') {
 				this.$element.on('nodeSelected', this.options.onNodeSelected);
 			}
+			if (typeof (this.options.onNodeTreeExpand) === 'function') {
+				this.$element.on('nodeTreeExpand', this.options.onNodeTreeExpand);
+			}
+			if (typeof (this.options.onNodeTreeMinimize) === 'function') {
+				this.$element.on('nodeTreeMinimize', this.options.onNodeTreeMinimize);
+			}
 		},
 
 		_clickHandler: function(event) {
@@ -138,7 +148,12 @@
 				this._render();
 			}
 			else if (node) {
-				this._setSelectedNode(node);
+				if (this._isSelectable(node)) {
+					this._setSelectedNode(node);
+				} else {
+					this._toggleNodes(node);
+					this._render();
+				}
 			}
 		},
 
@@ -154,6 +169,18 @@
 			}
 			return node;
 		},
+
+		// Actually triggers the nodeTreeExpand event
+		_triggerNodeTreeExpandEvent: function(node) {
+
+			this.$element.trigger('nodeTreeExpand', [$.extend(true, {}, node)]);
+		},
+
+		// Actually triggers the nodeTreeExpand event
+		_triggerNodeTreeMinimizeEvent: function(node) {
+
+			this.$element.trigger('nodeTreeMinimize', [$.extend(true, {}, node)]);
+		},		
 
 		// Actually triggers the nodeSelected event
 		_triggerNodeSelectedEvent: function(node) {
@@ -209,13 +236,20 @@
 			}
 
 			if (node.nodes) {
+				this._triggerNodeTreeMinimizeEvent(node);
 				node._nodes = node.nodes;
 				delete node.nodes;
 			}
 			else {
+				this._triggerNodeTreeExpandEvent(node);
 				node.nodes = node._nodes;
 				delete node._nodes;
 			}
+		},
+
+		// Returns true if the node is selectable in the tree
+		_isSelectable: function (node) {
+			return node.selectable !== false;
 		},
 
 		_render: function() {
@@ -310,6 +344,11 @@
 					// otherwise just text
 					treeItem
 						.append(node.text);
+				}
+
+				if (node.folder) {
+					treeItem
+						.attr('data-folder', node.folder)
 				}
 
 				// Add tags as badges
